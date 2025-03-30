@@ -1,4 +1,4 @@
-module github.com/sanjaykishor/jenkinsTui
+module github.com/sanjaykishor/JenkinsTui.git
 
 go 1.23.3
 
