@@ -1,0 +1,37 @@
+# Jenkins TUI Configuration
+
+# Current Jenkins server to use
+current: default
+
+# Jenkins server configurations
+jenkins_servers:
+  - name: default
+    url: https://jenkins.example.com
+    username: admin
+    token: your-api-token-here  # API token from Jenkins
+    proxy: ""                   # Optional HTTP proxy
+    insecureSkipVerify: true    # Skip TLS certificate verification
+
+  # You can define multiple servers and switch between them
+  - name: production
+    url: https://jenkins-prod.example.com
+    username: prod-user
+    token: prod-token-here
+    proxy: ""
+    insecureSkipVerify: false
+
+# UI settings
+ui:
+  theme: default         # UI theme (default, dark, light)
+  refreshInterval: 30    # Refresh interval in seconds
+  maxLogLines: 1000      # Maximum number of log lines to display
+  compactMode: false     # Enable compact mode
+
+# Keyboard shortcuts (advanced users only)
+keybindings:
+  quit: "q"
+  help: "?"
+  dashboard: "d"
+  jobs: "j"
+  builds: "b"
+  nodes: "n"
