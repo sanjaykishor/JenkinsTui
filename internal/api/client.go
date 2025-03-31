@@ -74,7 +74,6 @@ type JenkinsClient struct {
 	config     *JenkinsConfig
 	configPath string
 	mutex      sync.Mutex
-	apiErr     error
 }
 
 // NewClient creates a new JenkinsClient with the given config
