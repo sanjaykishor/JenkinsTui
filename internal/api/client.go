@@ -114,10 +114,21 @@ func NewClient(configPath string) (*JenkinsClient, error) {
 
 	// Create an HTTP client with the appropriate settings
 	transport := &http.Transport{}
+
+	// Configure TLS if needed
 	if serverConfig.InsecureSkipVerify {
 		transport.TLSClientConfig = &tls.Config{
 			InsecureSkipVerify: true,
 		}
+	}
+
+	// Configure proxy if specified
+	if serverConfig.Proxy != "" {
+		proxyURL, err := url.Parse(serverConfig.Proxy)
+		if err != nil {
+			return nil, fmt.Errorf("invalid proxy URL: %v", err)
+		}
+		transport.Proxy = http.ProxyURL(proxyURL)
 	}
 
 	client := &http.Client{
