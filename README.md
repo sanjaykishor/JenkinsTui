@@ -101,8 +101,6 @@ JenkinsTUI/
 │   ├── config/               # Configuration management
 │   ├── tui/                  # Terminal UI components
 │   └── utils/                # Utility functions
-├── pkg/
-│   └── jenkins/              # Public Jenkins API
 └── README.md                 # Project documentation
 ```
 
@@ -130,5 +128,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Acknowledgments
 
 - [Bubble Tea](https://github.com/charmbracelet/bubbletea) for the terminal UI framework
-- [jenkins-zh/jenkins-cli](https://github.com/jenkins-zh/jenkins-cli) for the Jenkins API client
 - [Lip Gloss](https://github.com/charmbracelet/lipgloss) for terminal styling

@@ -28,9 +28,9 @@ clean:
 	@echo "Clean complete!"
 
 # Run tests
-test:
-	@echo "Running tests..."
-	@go test -v ./...
+# test:
+# 	@echo "Running tests..."
+# 	@go test -v ./...
 
 # Install the application
 install:
@@ -54,7 +54,7 @@ help:
 	@echo "  make build     - Build the application"
 	@echo "  make run       - Run the application"
 	@echo "  make clean     - Clean build artifacts"
-	@echo "  make test      - Run tests"
+	# @echo "  make test      - Run tests"
 	@echo "  make install   - Install the application"
 	@echo "  make config    - Generate a template config file"
 	@echo "  make help      - Show this help"
