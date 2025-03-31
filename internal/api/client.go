@@ -5,7 +5,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"os"
@@ -88,7 +88,7 @@ func NewClient(configPath string) (*JenkinsClient, error) {
 	}
 
 	// Read and parse the config file
-	data, err := ioutil.ReadFile(configPath)
+	data, err := os.ReadFile(configPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read config file: %v", err)
 	}
@@ -168,7 +168,7 @@ func (c *JenkinsClient) GetServerInfo(ctx context.Context) (*ServerInfo, error) 
 		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response: %v", err)
 	}
@@ -221,7 +221,7 @@ func (c *JenkinsClient) GetJobs(ctx context.Context) ([]Job, error) {
 		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response: %v", err)
 	}
@@ -308,7 +308,7 @@ func (c *JenkinsClient) GetJobDetails(ctx context.Context, jobName string) (*Job
 		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response: %v", err)
 	}
@@ -389,7 +389,7 @@ func (c *JenkinsClient) GetBuildDetails(ctx context.Context, jobName string, bui
 		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response: %v", err)
 	}
@@ -471,7 +471,7 @@ func (c *JenkinsClient) GetBuildLog(ctx context.Context, jobName string, buildNu
 		return "", fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", fmt.Errorf("failed to read response: %v", err)
 	}
