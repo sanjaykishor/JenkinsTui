@@ -1,8 +1,8 @@
 # Jenkins TUI
 
-A terminal-based user interface for Jenkins, built with [Bubble Tea](https://github.com/charmbracelet/bubbletea) and [jenkins-zh/jenkins-cli](https://github.com/jenkins-zh/jenkins-cli).
+A terminal-based user interface for Jenkins, built with [Bubble Tea](https://github.com/charmbracelet/bubbletea)
 
-![Jenkins TUI Demo](.github/images/demo.png)
+![Jenkins TUI Demo](./images/)
 
 ## Features
 
@@ -76,16 +76,16 @@ jenkins_servers:
 ## Screenshots
 
 ### Dashboard View
-![Dashboard](.github/images/dashboard.png)
+![Dashboard](./images/dashboard.png)
 
 ### Job List View
-![Job List](.github/images/job-list.png)
+![Job List](./images/job-list.png)
 
 ### Job Detail View
-![Job Detail](.github/images/job-detail.png)
+![Job Detail](./images/job-detail.png)
 
 ### Build Logs View
-![Build Logs](.github/images/build-logs.png)
+![Build Logs](./images/build-logs.png)
 
 ## Development
 
@@ -107,14 +107,14 @@ JenkinsTUI/
 ### Building & Testing
 
 ```bash
-# Run tests
-make test
-
 # Build the application
 make build
 
 # Install the application
 make install
+
+# Configure the .yaml file
+make config
 ```
 
 ## Contributing
