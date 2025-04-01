@@ -79,6 +79,8 @@ Navigation:
 • Use arrow keys to navigate in lists and logs
 • Press Enter to select an item or action
 • Press Esc to go back to the previous view
+• Press j to go to the job list
+
 
 Views:
 • Dashboard: Overview of Jenkins server status
