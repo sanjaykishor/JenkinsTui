@@ -16,7 +16,6 @@ type ServerInfo struct {
 // Node represents a Jenkins node (agent)
 type Node struct {
 	Name         string
-	DisplayName  string
 	Description  string
 	Online       bool
 	Idle         bool

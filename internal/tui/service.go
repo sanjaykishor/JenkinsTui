@@ -65,6 +65,16 @@ func (s *JenkinsService) Connect() error {
 		return err
 	}
 
+	// Get the nodes
+	nodes, err := s.client.GetNodes(ctx)
+	if err != nil {
+		// Log the error but don't fail the connection
+		s.lastError = err
+	} else {
+		// Add nodes to server info
+		info.Nodes = nodes
+	}
+
 	s.connected = true
 	s.serverInfo = info
 	s.lastRefresh = time.Now()
@@ -79,6 +89,22 @@ func (s *JenkinsService) IsConnected() bool {
 // GetServerInfo returns information about the Jenkins server
 func (s *JenkinsService) GetServerInfo() *api.ServerInfo {
 	return s.serverInfo
+}
+
+// GetNodes returns a list of all Jenkins nodes
+func (s *JenkinsService) GetNodes() ([]api.Node, error) {
+	if !s.connected {
+		return nil, fmt.Errorf("not connected to Jenkins server")
+	}
+
+	ctx := context.Background()
+	nodes, err := s.client.GetNodes(ctx)
+	if err != nil {
+		s.lastError = err
+		return nil, err
+	}
+
+	return nodes, nil
 }
 
 // GetJobs returns a list of all Jenkins jobs

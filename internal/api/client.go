@@ -142,6 +142,61 @@ func NewClient(configPath string) (*JenkinsClient, error) {
 	}, nil
 }
 
+func (c *JenkinsClient) GetNodes(ctx context.Context) ([]Node, error) {
+
+	apiURL := fmt.Sprintf("%s/api/json?tree=computer[displayName,description,numExecutors,offline,idle]", c.config.URL)
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, apiURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %v", err)
+	}
+
+	req.SetBasicAuth(c.config.Username, c.config.Token)
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get nodes: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+	}
+
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response: %v", err)
+	}
+
+	var nodesResponse struct {
+		Computer []struct {
+			DisplayName  string `json:"displayName"`
+			Description  string `json:"description"`
+			NumExecutors int    `json:"numExecutors"`
+			Offline      bool   `json:"offline"`
+			Idle         bool   `json:"idle"`
+		} `json:"computer"`
+	}
+
+	if err := json.Unmarshal(bodyBytes, &nodesResponse); err != nil {
+		return nil, fmt.Errorf("failed to parse response: %v", err)
+	}
+
+	var nodes []Node
+	for _, node := range nodesResponse.Computer {
+		nodes = append(nodes, Node{
+			Name:         node.DisplayName,
+			Description:  node.Description,
+			NumExecutors: node.NumExecutors,
+			Online:       !node.Offline,
+			Idle:         node.Idle,
+		})
+	}
+
+	return nodes, nil
+	
+}
+
 // GetServerInfo retrieves information about the Jenkins server
 func (c *JenkinsClient) GetServerInfo(ctx context.Context) (*ServerInfo, error) {
 	// Lock to ensure thread safety
