@@ -1,6 +1,36 @@
 package api
 
-import "time"
+import 
+(
+	"time"
+	"net/http"
+	"sync"
+)
+
+// JenkinsConfig represents a configuration entry for a Jenkins server
+type JenkinsConfig struct {
+	Name               string `yaml:"name"`
+	URL                string `yaml:"url"`
+	Username           string `yaml:"username"`
+	Token              string `yaml:"token"`
+	Proxy              string `yaml:"proxy"`
+	InsecureSkipVerify bool   `yaml:"insecureSkipVerify"`
+}
+
+// JenkinsConfigFile represents the Jenkins CLI config file
+type JenkinsConfigFile struct {
+	Current        string          `yaml:"current"`
+	JenkinsServers []JenkinsConfig `yaml:"jenkins_servers"`
+}
+
+// JenkinsClient is a client for interacting with a Jenkins server
+type JenkinsClient struct {
+	client     *http.Client
+	config     *JenkinsConfig
+	configPath string
+	mutex      sync.Mutex
+}
+
 
 // ServerInfo represents information about a Jenkins server
 type ServerInfo struct {

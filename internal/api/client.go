@@ -11,7 +11,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"sync"
 	"time"
 
 	"gopkg.in/yaml.v3"
@@ -50,30 +49,6 @@ func GetStatusFromResult(result string, building bool) JobStatus {
 	default:
 		return StatusUnknown
 	}
-}
-
-// JenkinsConfig represents a configuration entry for a Jenkins server
-type JenkinsConfig struct {
-	Name               string `yaml:"name"`
-	URL                string `yaml:"url"`
-	Username           string `yaml:"username"`
-	Token              string `yaml:"token"`
-	Proxy              string `yaml:"proxy"`
-	InsecureSkipVerify bool   `yaml:"insecureSkipVerify"`
-}
-
-// JenkinsConfigFile represents the Jenkins CLI config file
-type JenkinsConfigFile struct {
-	Current        string          `yaml:"current"`
-	JenkinsServers []JenkinsConfig `yaml:"jenkins_servers"`
-}
-
-// JenkinsClient is a client for interacting with a Jenkins server
-type JenkinsClient struct {
-	client     *http.Client
-	config     *JenkinsConfig
-	configPath string
-	mutex      sync.Mutex
 }
 
 // NewClient creates a new JenkinsClient with the given config
@@ -194,7 +169,7 @@ func (c *JenkinsClient) GetNodes(ctx context.Context) ([]Node, error) {
 	}
 
 	return nodes, nil
-	
+
 }
 
 // GetServerInfo retrieves information about the Jenkins server
@@ -583,9 +558,69 @@ func (c *JenkinsClient) TriggerBuild(ctx context.Context, jobName string, parame
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode >= 400 {
+	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("failed to trigger build, status code: %d", resp.StatusCode)
 	}
 
+	return nil
+}
+
+func (c *JenkinsClient) DeleteJob(ctx context.Context, jobName string) error {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
+	encodedJobName := url.PathEscape(jobName)
+
+	apiURL := fmt.Sprintf("%s/job/%s/doDelete", c.config.URL, encodedJobName)
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, apiURL, nil)
+	if err != nil {
+		return fmt.Errorf("failed to create request: %v", err)
+	}
+
+	req.SetBasicAuth(c.config.Username, c.config.Token)
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return fmt.Errorf("failed to delete job: %v", err)
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to delete job, status code: %d", resp.StatusCode)
+	}
+
+	return nil
+
+}
+
+// StopBuild stops a running build
+func (c *JenkinsClient) StopBuild(ctx context.Context, jobName string, buildNumber int) error {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
+	encodedJobName := url.PathEscape(jobName)
+
+	apiURL := fmt.Sprintf("%s/job/%s/%d/stop", c.config.URL, encodedJobName, buildNumber)
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, apiURL, nil)
+
+	if err != nil {
+		return fmt.Errorf("failed to create request: %v", err)
+	}
+
+	req.SetBasicAuth(c.config.Username, c.config.Token)
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return fmt.Errorf("failed to stop build: %v", err)
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to stop build, status code: %d", resp.StatusCode)
+	}
 	return nil
 }
