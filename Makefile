@@ -46,6 +46,24 @@ config:
 		echo "current: default\njenkins_servers:\n  - name: default\n    url: https://jenkins.example.com\n    username: admin\n    token: your-api-token-here\n    proxy: \"\"\n    insecureSkipVerify: true" > $(HOME)/.jenkins-cli.yaml
 	@echo "Generated config at $(HOME)/.jenkins-cli.yaml"
 
+# Generate build for mac
+build-mac:
+	@echo "Building for mac..."
+	@GOOS=darwin GOARCH=amd64 go build $(GOFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME)-mac $(MAIN_PATH)
+	@echo "Build complete!"
+
+# Generate build for linux
+build-linux:
+	@echo "Building for linux..."
+	@GOOS=linux GOARCH=amd64 go build $(GOFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME)-linux $(MAIN_PATH)
+	@echo "Build complete!"
+
+# Generate build for windows
+build-windows:
+	@echo "Building for windows..."
+	@GOOS=windows GOARCH=amd64 go build $(GOFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME)-windows.exe $(MAIN_PATH)
+	@echo "Build complete!"
+
 # Show help
 help:
 	@echo "Jenkins TUI - A terminal UI for Jenkins"
