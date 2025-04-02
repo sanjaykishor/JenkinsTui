@@ -2,7 +2,6 @@ package components
 
 import (
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/charmbracelet/bubbles/key"
@@ -33,7 +32,7 @@ func (i JobListItem) Title() string {
 
 // Description returns the description of the job item
 func (i JobListItem) Description() string {
-	statusColor := getStatusColor(i.Status)
+	statusColor := utils.GetStatusColor(i.Status)
 	status := lipgloss.NewStyle().Foreground(lipgloss.Color(statusColor)).Render(i.Status)
 
 	var lastBuildStr string
@@ -46,10 +45,10 @@ func (i JobListItem) Description() string {
 
 // JobListComponent represents the job list view
 type JobListComponent struct {
-	list     list.Model
-	keys     KeyMap
-	width    int
-	height   int
+	list   list.Model
+	keys   KeyMap
+	width  int
+	height int
 }
 
 // NewJobList creates a new job list component
@@ -131,24 +130,3 @@ func (j JobListComponent) Update(msg tea.Msg) (JobListComponent, tea.Cmd) {
 func (j JobListComponent) View() string {
 	return j.list.View()
 }
-
-// Helper functions
-
-// getStatusColor returns the appropriate color for a job status
-func getStatusColor(status string) string {
-	switch strings.ToLower(status) {
-	case "success":
-		return "42" // Green
-	case "failed", "failure":
-		return "196" // Red
-	case "aborted":
-		return "208" // Orange
-	case "running":
-		return "33" // Blue
-	case "waiting":
-		return "247" // Gray
-	default:
-		return "247" // Gray for unknown status
-	}
-}
-

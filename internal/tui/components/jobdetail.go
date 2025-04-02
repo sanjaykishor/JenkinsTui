@@ -31,7 +31,7 @@ func (b BuildInfo) Title() string {
 
 // Description implements list.Item
 func (b BuildInfo) Description() string {
-	statusColor := getStatusColor(b.Status)
+	statusColor := utils.GetStatusColor(b.Status)
 	status := lipgloss.NewStyle().Foreground(lipgloss.Color(statusColor)).Render(b.Status)
 
 	return fmt.Sprintf("%s | %s | Duration: %s",
@@ -163,7 +163,7 @@ func (j JobDetailComponent) View() string {
 
 	// Last build info if available
 	if j.lastBuild != nil {
-		statusColor := getStatusColor(j.lastBuild.Status)
+		statusColor := utils.GetStatusColor(j.lastBuild.Status)
 		status := lipgloss.NewStyle().Foreground(lipgloss.Color(statusColor)).Render(j.lastBuild.Status)
 
 		jobDetails.WriteString(fmt.Sprintf("\nLast Build (#%d):\n", j.lastBuild.Number))

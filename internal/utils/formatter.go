@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"time"
+	"strings"
 )
 
 // FormatDuration formats a duration in milliseconds as a human-readable string
@@ -65,5 +66,23 @@ func FormatTimeAgo(t time.Time) string {
 			return "1 month ago"
 		}
 		return fmt.Sprintf("%d months ago", months)
+	}
+}
+
+// GetStatusColor returns the appropriate color for a job status
+func GetStatusColor(status string) string {
+	switch strings.ToLower(status) {
+	case "success":
+		return "42" // Green
+	case "failed", "failure":
+		return "196" // Red
+	case "aborted":
+		return "208" // Orange
+	case "running":
+		return "33" // Blue
+	case "waiting":
+		return "247" // Gray
+	default:
+		return "247" // Gray for unknown status
 	}
 }
