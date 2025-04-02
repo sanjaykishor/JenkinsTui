@@ -8,31 +8,7 @@ import (
 	"github.com/charmbracelet/bubbles/help"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-)
-
-var (
-	titleStyle = lipgloss.NewStyle().
-			BorderStyle(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("240")).
-			Padding(0, 1).
-			Bold(true).
-			Foreground(lipgloss.Color("#FAFAFA")).
-			Background(lipgloss.Color("#7D56F4")).
-			MarginBottom(1)
-
-	infoBlockStyle = lipgloss.NewStyle().
-			BorderStyle(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("240")).
-			Padding(1, 2).
-			MarginRight(2)
-
-	serverInfoStyle = lipgloss.NewStyle().
-			BorderStyle(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("63")).
-			Padding(1, 2)
-
-	successStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("42"))
-	errorStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("196"))
+	"github.com/sanjaykishor/JenkinsTui.git/internal/utils"
 )
 
 // ServerInfo contains information about the Jenkins server
@@ -93,16 +69,16 @@ func (d DashboardComponent) View() string {
 	// Create the dashboard view
 	var sb strings.Builder
 
-	title := titleStyle.Render("Jenkins TUI Dashboard")
+	title := utils.TitleStyle.Render("Jenkins TUI Dashboard")
 	sb.WriteString(title)
 	sb.WriteString("\n\n")
 
 	// Server information
 	serverTitle := "Server Information"
 	if d.serverInfo.Connected {
-		serverTitle += " " + successStyle.Render("● Connected")
+		serverTitle += " " + utils.SuccessText.Render("● Connected")
 	} else {
-		serverTitle += " " + errorStyle.Render("● Disconnected")
+		serverTitle += " " + utils.FailureText.Render("● Disconnected")
 	}
 
 	var serverContent string
@@ -120,7 +96,7 @@ func (d DashboardComponent) View() string {
 		serverContent = "Not connected to Jenkins server"
 	}
 
-	serverInfo := serverInfoStyle.Width(d.width / 2).Render(
+	serverInfo := utils.ServerInfoStyle.Width(d.width / 2).Render(
 		lipgloss.JoinVertical(
 			lipgloss.Left,
 			serverTitle,

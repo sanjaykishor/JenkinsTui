@@ -59,7 +59,7 @@ func NewJobList() JobListComponent {
 	jobList.Title = "Jenkins Jobs"
 	jobList.SetShowStatusBar(true)
 	jobList.SetFilteringEnabled(true)
-	jobList.Styles.Title = titleStyle
+	jobList.Styles.Title = utils.TitleStyle
 	jobList.SetShowHelp(true)
 
 	return JobListComponent{

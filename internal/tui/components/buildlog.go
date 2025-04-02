@@ -7,13 +7,7 @@ import (
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-)
-
-var (
-	logStyle = lipgloss.NewStyle().
-		BorderStyle(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color("240")).
-		Padding(1, 2)
+	"github.com/sanjaykishor/JenkinsTui.git/internal/utils"
 )
 
 // BuildLogComponent represents the build log view
@@ -26,7 +20,6 @@ type BuildLogComponent struct {
 	ready     bool
 	keys      KeyMap
 	log       string
-	logFilter string
 }
 
 // NewBuildLog creates a new build log component
@@ -75,7 +68,7 @@ func (b BuildLogComponent) Update(msg tea.Msg) (BuildLogComponent, tea.Cmd) {
 		if !b.ready {
 			// Initialize viewport now that we know the terminal dimensions
 			b.viewport = viewport.New(msg.Width-4, msg.Height-10)
-			b.viewport.Style = logStyle
+			b.viewport.Style = utils.LogStyle
 			b.viewport.SetContent(b.formatLog())
 			b.ready = true
 		} else {
@@ -103,7 +96,7 @@ func (b BuildLogComponent) View() string {
 	var sb strings.Builder
 
 	// Add the title
-	title := titleStyle.Render(fmt.Sprintf("Build Log: %s #%d", b.jobName, b.buildNum))
+	title := utils.TitleStyle.Render(fmt.Sprintf("Build Log: %s #%d", b.jobName, b.buildNum))
 	sb.WriteString(title)
 	sb.WriteString("\n\n")
 

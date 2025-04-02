@@ -6,21 +6,7 @@ import (
 
 	"github.com/charmbracelet/bubbles/help"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
-)
-
-var (
-	helpTitleStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#FAFAFA")).
-			Background(lipgloss.Color("#7D56F4")).
-			Padding(0, 1).
-			MarginBottom(1)
-
-	helpSectionStyle = lipgloss.NewStyle().
-				Border(lipgloss.RoundedBorder()).
-				BorderForeground(lipgloss.Color("240")).
-				Padding(1, 2).
-				MarginBottom(1)
+	"github.com/sanjaykishor/JenkinsTui.git/internal/utils"
 )
 
 // HelpComponent represents the help view
@@ -63,13 +49,13 @@ func (h HelpComponent) View() string {
 	var sb strings.Builder
 
 	// Title
-	title := helpTitleStyle.Render("Jenkins TUI Help")
+	title := utils.HelpTitleStyle.Render("Jenkins TUI Help")
 	sb.WriteString(title)
 	sb.WriteString("\n\n")
 
 	// Keyboard shortcuts section
 	shortcutsContent := "Keyboard Shortcuts:\n\n" + h.help.View(h.keys)
-	shortcuts := helpSectionStyle.Width(h.width - 4).Render(shortcutsContent)
+	shortcuts := utils.HelpSectionStyle.Width(h.width - 4).Render(shortcutsContent)
 	sb.WriteString(shortcuts)
 	sb.WriteString("\n")
 
@@ -98,7 +84,7 @@ Tips:
 • Logs will automatically colorize common patterns
 `)
 
-	usage := helpSectionStyle.Width(h.width - 4).Render("Usage Guide:" + usageContent)
+	usage := utils.HelpSectionStyle.Width(h.width - 4).Render("Usage Guide:" + usageContent)
 	sb.WriteString(usage)
 	sb.WriteString("\n")
 
@@ -111,7 +97,7 @@ Version: 0.1.0
 Source: github.com/sanjaykishor/JenkinsTui
 `)
 
-	about := helpSectionStyle.Width(h.width - 4).Render("About:" + aboutContent)
+	about := utils.HelpSectionStyle.Width(h.width - 4).Render("About:" + aboutContent)
 	sb.WriteString(about)
 
 	return sb.String()

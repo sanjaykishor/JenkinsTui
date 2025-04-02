@@ -71,7 +71,7 @@ func NewJobDetail() JobDetailComponent {
 	buildList.Title = "Builds"
 	buildList.SetShowStatusBar(true)
 	buildList.SetFilteringEnabled(true)
-	buildList.Styles.Title = titleStyle
+	buildList.Styles.Title = utils.TitleStyle
 	buildList.SetShowHelp(true)
 
 	return JobDetailComponent{
@@ -148,12 +148,12 @@ func (j JobDetailComponent) View() string {
 	var sb strings.Builder
 
 	// Render job title and details
-	title := titleStyle.Render(fmt.Sprintf("Job: %s", j.jobName))
+	title := utils.TitleStyle.Render(fmt.Sprintf("Job: %s", j.jobName))
 	sb.WriteString(title)
 	sb.WriteString("\n\n")
 
 	// Job details section
-	jobDetailsStyle := infoBlockStyle.Copy().Width(j.width - 4)
+	jobDetailsStyle := utils.InfoBlockStyle.Copy().Width(j.width - 4)
 
 	var jobDetails strings.Builder
 	jobDetails.WriteString(fmt.Sprintf("URL: %s\n", j.jobURL))

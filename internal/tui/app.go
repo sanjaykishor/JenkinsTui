@@ -7,9 +7,9 @@ import (
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/sanjaykishor/JenkinsTui.git/internal/api"
 	"github.com/sanjaykishor/JenkinsTui.git/internal/tui/components"
+	"github.com/sanjaykishor/JenkinsTui.git/internal/utils"
 )
 
 // ViewType represents the various views available in our application
@@ -302,9 +302,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.statusMessage = "Help View"
 			}
 			return m, nil
-		
+
 		case key.Matches(msg, m.keys.Refresh):
-			cmds = append(cmds, m.Connect())	
+			cmds = append(cmds, m.Connect())
 
 		case key.Matches(msg, m.keys.Dashboard):
 			m.currentView = DashboardView
@@ -425,16 +425,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 // View implements bubbletea.Model
 func (m Model) View() string {
 	// Status bar at the bottom
-	statusBar := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("241")).
-		Render(m.statusMessage)
+	statusBar := utils.StatusBar.Render(m.statusMessage)
 
 	// Error message
 	var errorView string
 	if m.errorMsg != "" {
-		errorStyle := lipgloss.NewStyle().
-			Foreground(lipgloss.Color("196")).
-			Render(m.errorMsg)
+		errorStyle := utils.FailureText.Render(m.errorMsg)
 		errorView = fmt.Sprintf("\n%s", errorStyle)
 	}
 
