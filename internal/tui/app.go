@@ -302,6 +302,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.statusMessage = "Help View"
 			}
 			return m, nil
+		
+		case key.Matches(msg, m.keys.Refresh):
+			cmds = append(cmds, m.Connect())	
 
 		case key.Matches(msg, m.keys.Dashboard):
 			m.currentView = DashboardView
