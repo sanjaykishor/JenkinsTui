@@ -2,8 +2,6 @@
 
 A terminal-based user interface for Jenkins, built with [Bubble Tea](https://github.com/charmbracelet/bubbletea)
 
-![Jenkins TUI Demo](./images/)
-
 ## Features
 
 - **Dashboard View**: Overview of server status and recent jobs
