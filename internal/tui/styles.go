@@ -78,16 +78,3 @@ var (
 			MarginLeft(1)
 )
 
-// StatusIndicator returns a colored bullet for job status
-func StatusIndicator(status string) string {
-	switch status {
-	case "success":
-		return SuccessText.Render("●")
-	case "failure":
-		return FailureText.Render("●")
-	case "running":
-		return WarningText.Render("●")
-	default:
-		return NormalText.Render("○")
-	}
-}
