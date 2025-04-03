@@ -187,6 +187,38 @@ func (s *JenkinsService) TriggerBuild(jobName string, parameters map[string]stri
 	return nil
 }
 
+// DeleteJob deletes a job from the Jenkins server
+func (s *JenkinsService) DeleteJob(jobName string) error {
+	if !s.connected {
+		return fmt.Errorf("not connected to Jenkins server")
+	}
+
+	ctx := context.Background()
+	err := s.client.DeleteJob(ctx, jobName)
+	if err != nil {
+		s.lastError = err
+		return err
+	}
+
+	return nil
+}
+
+// StopBuild stops a running build
+func (s *JenkinsService) StopBuild(jobName string, buildNumber int) error {
+	if !s.connected {
+		return fmt.Errorf("not connected to Jenkins server")
+	}
+
+	ctx := context.Background()
+	err := s.client.StopBuild(ctx, jobName, buildNumber)
+	if err != nil {
+		s.lastError = err
+		return err
+	}
+
+	return nil
+}
+
 // GetLastError returns the last error encountered
 func (s *JenkinsService) GetLastError() error {
 	return s.lastError

@@ -565,6 +565,7 @@ func (c *JenkinsClient) TriggerBuild(ctx context.Context, jobName string, parame
 	return nil
 }
 
+// DeleteJob deletes a job from the Jenkins server
 func (c *JenkinsClient) DeleteJob(ctx context.Context, jobName string) error {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
