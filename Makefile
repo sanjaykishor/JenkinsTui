@@ -1,4 +1,4 @@
-.PHONY: build run clean test install
+.PHONY: build run clean test install config build-mac build-linux build-windows help
 
 # Variables
 BINARY_NAME=jenkinsTui
