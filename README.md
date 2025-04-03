@@ -102,7 +102,7 @@ JenkinsTUI/
 └── README.md                 # Project documentation
 ```
 
-### Building & Testing
+### Building 
 
 ```bash
 # Build the application
