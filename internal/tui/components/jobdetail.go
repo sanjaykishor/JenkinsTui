@@ -19,28 +19,6 @@ type BuildInfo struct {
 	Duration  time.Duration
 }
 
-// FilterValue implements list.Item
-func (b BuildInfo) FilterValue() string {
-	return fmt.Sprintf("#%d", b.Number)
-}
-
-// Title implements list.Item
-func (b BuildInfo) Title() string {
-	return fmt.Sprintf("Build #%d", b.Number)
-}
-
-// Description implements list.Item
-func (b BuildInfo) Description() string {
-	statusColor := utils.GetStatusColor(b.Status)
-	status := lipgloss.NewStyle().Foreground(lipgloss.Color(statusColor)).Render(b.Status)
-
-	return fmt.Sprintf("%s | %s | Duration: %s",
-		status,
-		utils.FormatTimeAgo(b.StartTime),
-		utils.FormatDuration(int64(b.Duration)),
-	)
-}
-
 // Build represents detailed information about a build
 type Build struct {
 	Number      int
@@ -61,6 +39,28 @@ type JobDetailComponent struct {
 	width       int
 	height      int
 	keys        KeyMap
+}
+
+// FilterValue implements list.Item
+func (b BuildInfo) FilterValue() string {
+	return fmt.Sprintf("#%d", b.Number)
+}
+
+// Title implements list.Item
+func (b BuildInfo) Title() string {
+	return fmt.Sprintf("Build #%d", b.Number)
+}
+
+// Description implements list.Item
+func (b BuildInfo) Description() string {
+	statusColor := utils.GetStatusColor(b.Status)
+	status := lipgloss.NewStyle().Foreground(lipgloss.Color(statusColor)).Render(b.Status)
+
+	return fmt.Sprintf("%s | %s | Duration: %s",
+		status,
+		utils.FormatTimeAgo(b.StartTime),
+		utils.FormatDuration(int64(b.Duration)),
+	)
 }
 
 // NewJobDetail creates a new job detail component

@@ -194,7 +194,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				Mode:       msg.serverInfo.Mode,
 				Uptime:     msg.serverInfo.Uptime.String(),
 				TotalNodes: len(msg.serverInfo.Nodes),
-				FreeNodes:  countFreeNodes(msg.serverInfo.Nodes),
+				FreeNodes:  utils.CountFreeNodes(msg.serverInfo.Nodes),
 			}
 			m.dashboard = m.dashboard.WithServerInfo(serverInfo)
 
@@ -456,15 +456,3 @@ func (m Model) View() string {
 	return fmt.Sprintf("%s\n\n%s\n\n%s%s", content, statusBar, helpView, errorView)
 }
 
-// Helper functions
-
-// countFreeNodes returns the number of online and idle nodes
-func countFreeNodes(nodes []api.Node) int {
-	count := 0
-	for _, node := range nodes {
-		if node.Online && node.Idle {
-			count++
-		}
-	}
-	return count
-}
